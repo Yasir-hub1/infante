@@ -5780,6 +5780,14 @@ expo-constants@~13.2.2, expo-constants@~13.2.4:
     "@expo/config" "~7.0.0"
     uuid "^3.3.2"
 
+expo-contacts@~10.3.0:
+  version "10.3.0"
+  resolved "https://registry.yarnpkg.com/expo-contacts/-/expo-contacts-10.3.0.tgz#c0b9806bb4b77466b9b5b1b24f9b3f72105fe926"
+  integrity sha512-fLyrCUEfdbm9a3GEvSHLwJoEK3aLaWCKLI/8XsTARZFYFlby2Um6UUdSaAsd+zDgM7LvkTnkUvz0s/6+pDHLng==
+  dependencies:
+    "@expo/config-plugins" "~5.0.0"
+    uuid "^3.4.0"
+
 expo-error-recovery@~3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/expo-error-recovery/-/expo-error-recovery-3.2.0.tgz#3a4543382904a5e70829cb41d7fc0f022c2bef6e"
@@ -5818,6 +5826,13 @@ expo-keep-awake@~10.2.0:
   version "10.2.0"
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-10.2.0.tgz#46f04740bccd321732bbbed93491e2076d5dbbd7"
   integrity sha512-kIRtO4Hmrvxh4E45IPWG/NiUZsuRe1AQwBT09pq+kx8nm6tUS4B9TeL6+1NFy+qVBLbGKDqoQD5Ez7XYTFtBeQ==
+
+expo-location@~14.3.0:
+  version "14.3.0"
+  resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-14.3.0.tgz#f613147e36afad974732ddc1b4e142d7e1b8bba2"
+  integrity sha512-CKU6bW1rB6521LruyUsZm6dQXXBix9E64ZZmOpVgom1DQ3Bfd23IBvXXeUQeIhy+NbOzF1itFrPTLzspgl6wPg==
+  dependencies:
+    "@expo/config-plugins" "~5.0.0"
 
 expo-modules-autolinking@0.10.3:
   version "0.10.3"
