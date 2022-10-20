@@ -8,6 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 //Función que contiene el componente para seleccionar imagenes de la galería
 //************************************* */
 function ImagePickerChoose(props) {
+  // console.log("desde los props ",props);
   const [image, setImage] = useState(null);
   const [photoStatus, setPhotoStatus] = useState('No se ha seleccionado ninguna imágen');
   //controla que los permisos para acceder a la galería hayan sido dados
@@ -26,11 +27,12 @@ function ImagePickerChoose(props) {
   const pickImage = async () => {
 
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: false,
       aspect: [4, 3],
       quality: 1,
     });
+    console.log("PICK IMAGE ",result);
     if (!result.cancelled) {
       setImage(result.uri);
       setPhotoStatus('Listo!, imágen cargada correctamente')
@@ -77,7 +79,7 @@ class SubirImagen extends Component {
     let formData = new FormData();
     formData.append('fotos',file);
 
-    return await fetch('http://192.168.100.180:8000/api/moderation', {
+    return await fetch('http://192.168.100.184:8000/api/control', {
       method: 'POST',
       body:formData,
       header: {
@@ -85,27 +87,14 @@ class SubirImagen extends Component {
         'Content-Type':'application/json'
         // 'Content-Type': 'application/x-amz-json-1.1'
       },
-    }).then(res =>res.text())
+    }).then(res =>res.json())
       .catch(error => console.error('Error', error))
       .then(response => {
-        console.log('DESDE EL RESPONSE ',response)
+        console.log('DESDE EL RESPONSE ',response.data)
       });
   }
 
 
-
-   /*  if (localUri == null || localUri == '') {
-      Alert.alert('Debe seleccionar una imágen')
-    }
-    else {
-      let filename = localUri.split('/').pop();
-
-      let match = /\.(\w+)$/.exec(filename);
-      let type = match ? `image/${match[1]}` : `image`;
-
-     
-
-  }; */
   render() {
     return (
       <View style={styles.container}>
