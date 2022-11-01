@@ -70,6 +70,7 @@ class SubirImagen extends Component {
   uploadImage = async () => {
       let localUri = this.state.image;
     let filename = localUri.split('/').pop();
+    console.log ("filename ",filename);
     const file={
          uri: localUri,
          name:filename,
