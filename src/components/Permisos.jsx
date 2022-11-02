@@ -27,7 +27,7 @@ export default function Permisos() {
       let contacto = data[i].firstName+': '+data[i].phoneNumbers[0].number
       setLocation(coordenadas)
       setContacts(contacto)
-      captureRef()
+      captureScreen()
     }
 
     captureScreen({
