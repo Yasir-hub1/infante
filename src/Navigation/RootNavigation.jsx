@@ -3,7 +3,7 @@ import InicioStack from "./InicioStack";
 import AuthStack from "./AuthStack";
 
 export default  RootNavigation = () => {
-    const user=false
+    const user=true
     return (
         <NavigationContainer>
           {/* <InicioStack/> */}

@@ -49,8 +49,8 @@ function CustomHeader({ title }) {
 /* inicializamos las vistas Inicio y config */
 export default function InicioStack() {
   return (
-    <Stack.Navigator initialRouteName="Root" screenOptions={myConfig}>
-      <Stack.Screen name="Root" component={Inicio} />
+    <Stack.Navigator initialRouteName="Inicio" screenOptions={myConfig}>
+      <Stack.Screen name="Inicio" component={Inicio} />
    
     </Stack.Navigator>
   );

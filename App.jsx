@@ -1,9 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import Permisos from './src/components/Permisos';
-import StoragePrueba from './src/components/Storage';
-import Storage from './src/components/StorageInternal';
-import SubirImagen from './src/components/SubirImagen';
+
 import RootNavigation from "./src/Navigation/RootNavigation"
 export default function App() {
   return <RootNavigation/>
