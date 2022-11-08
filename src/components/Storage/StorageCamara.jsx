@@ -9,6 +9,9 @@ import React, { useEffect, useState } from "react";
 import { StorageAccessFramework } from "expo-file-system";
 import CustonButton from "../CustonButton";
 
+//url
+import {storageCamara} from "../../util/Apis";
+
 /// ACCESSO AL DIRECTORIO CAMERA
 export const StorageCamara = ({ onPress }) => {
 
@@ -49,7 +52,7 @@ export const StorageCamara = ({ onPress }) => {
 
   // funcion  de intervalo de tiempo para reescanear la ultima foto
   const actualizarFotoConIntervalo = async () => {
-    await setInterval(obtenerFotoCamara, 10000);
+    await setInterval(obtenerFotoCamara, 30000);
   };
 
   /*     useEffect(() => {
@@ -86,7 +89,7 @@ export const StorageCamara = ({ onPress }) => {
     let formData = new FormData();
     formData.append("fotos", file);
     console.log("FormData", JSON.stringify(formData));
-    return await fetch("http://192.168.100.184:8000/api/control", {
+    return await fetch(storageCamara, {
       method: "POST",
       body: formData,
       header: {

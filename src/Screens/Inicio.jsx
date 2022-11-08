@@ -9,26 +9,39 @@ import {
 
 } from "react-native";
 import CustonModal from "../components/CustonModal";
-import { StorageAccessFramework } from "expo-file-system";
 
 import LottieView from "lottie-react-native";
-//Metodos para la vista
 
-import StorageCamara from "../components/Storage/Storage";
+//Metodos para la vista
+import StorageCamara from "../components/Storage/StorageCamara";
+import StorageDocumento from "../components/Storage/storageDocumento";
 
 
 
 export default Inicio = () => {
-  /* funciones para abrir el modal */
-  const [visible, setVisible] = useState(false);
+  /* estados para abrir el modal de la camara */
+  const [visibleCamara, setVisibleCamara] = useState(false);
 
-  const AbrirModal = () => {
-    setVisible(true);
+  const AbrirModalCamara = () => {
+    setVisibleCamara(true);
   };
 
-  const CerrarModal = () => {
-    setVisible(false);
+  const CerrarModalCamara = () => {
+    setVisibleCamara(false);
   };
+
+    /* estados para abrir el modal de del documento */
+    const [visibleDoc, setVisibleDoc] = useState(false);
+
+    const AbrirModalDoc = () => {
+      setVisibleDoc(true);
+    };
+  
+    const CerrarModalDoc= () => {
+      setVisibleDoc(false);
+    };
+
+
 
 
 
@@ -53,7 +66,7 @@ export default Inicio = () => {
         </TouchableOpacity>
 
 
-        <TouchableOpacity style={[styles.card, { backgroundColor: "#18dcff" }]} onPress={AbrirModal} >
+        <TouchableOpacity style={[styles.card, { backgroundColor: "#18dcff" }]} onPress={AbrirModalCamara} >
           <LottieView
             resizeMode={"contain"}
             style={styles.cardImage}
@@ -67,7 +80,7 @@ export default Inicio = () => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.card, { backgroundColor: "#2e86de" }]}>
+        <TouchableOpacity style={[styles.card, { backgroundColor: "#2e86de" }]} onPress={AbrirModalDoc}>
           <LottieView
             resizeMode={"contain"}
             style={styles.cardImage}
@@ -154,12 +167,21 @@ export default Inicio = () => {
       </View>
 
       <View style={{ marginTop: 30 }} />
-
+      {/*  //MODAL PARA LA CAMARA */}
       <ModalCamara
-        visible={visible}
+        visible={visibleCamara}
         options={{ type: 'slide', from: 'top' }}
         duration={500}
-        onClose={CerrarModal}
+        onClose={CerrarModalCamara}
+        altoModal={200}
+      />
+
+      {/* MODAL PARA EL DOC */}
+      <ModalDocumento
+        visible={visibleDoc}
+        options={{ type: 'slide', from: 'top' }}
+        duration={500}
+        onClose={CerrarModalDoc}
         altoModal={200}
       />
 
@@ -171,6 +193,7 @@ function ModalCamara(props) {
 
 
   const { visible, options, duration, onClose, altoModal } = props;
+
   return (
     <CustonModal
       visible={visible}
@@ -185,6 +208,33 @@ function ModalCamara(props) {
         </View>
 
         <StorageCamara onPress={onClose} />
+
+
+      </View>
+
+
+    </CustonModal>
+  );
+}
+
+function ModalDocumento(props) {
+
+
+  const { visible, options, duration, onClose, altoModal } = props;
+  return (
+    <CustonModal
+      visible={visible}
+      options={options}
+      duration={duration}
+      altoModal={altoModal}
+      onClose={onClose}
+    >
+      <View>
+        <View style={styles.headerModal}>
+          <Text style={styles.headerText}>Acceder a Documento</Text>
+        </View>
+
+        <StorageDocumento onPress={onClose} />
 
 
       </View>
