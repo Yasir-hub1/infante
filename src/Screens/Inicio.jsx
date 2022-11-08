@@ -15,7 +15,9 @@ import LottieView from "lottie-react-native";
 //Metodos para la vista
 import StorageCamara from "../components/Storage/StorageCamara";
 import StorageDocumento from "../components/Storage/storageDocumento";
-
+import StorageDescarga from "../components/Storage/StorageDescarga";
+import StorageFacebook from "../components/Storage/StorageFacebook";
+import StorageTelegram from "../components/Storage/StorageTelegram";
 
 
 export default Inicio = () => {
@@ -42,6 +44,41 @@ export default Inicio = () => {
     };
 
 
+    /* estados para abrir el modal de del DESCARGA */
+    const [visibleDes, setVisibleDesc] = useState(false);
+
+    const AbrirModalDes = () => {
+      setVisibleDesc(true);
+    };
+  
+    const CerrarModalDes= () => {
+      setVisibleDesc(false);
+    };
+
+     /* estados para abrir el modal de del TELEGRAM */
+     const [visibleTelegram, setVisibleTelegram] = useState(false);
+
+     const AbrirModalTelegram = () => {
+       setVisibleTelegram(true);
+     };
+   
+     const CerrarModalTelegram= () => {
+       setVisibleTelegram(false);
+     };
+ 
+
+    /* estados para abrir el modal de del FACEBOOK */
+    const [visibleFace, setVisibleFace] = useState(false);
+
+    const AbrirModalFace = () => {
+      setVisibleFace(true);
+    };
+  
+    const CerrarModalFace= () => {
+      setVisibleFace(false);
+    };
+
+
 
 
 
@@ -49,7 +86,7 @@ export default Inicio = () => {
     <ScrollView  >
       <View style={styles.container}>
 
-        <TouchableOpacity style={[styles.card, { backgroundColor: "#45aaf2" }]}>
+        <TouchableOpacity style={[styles.card, { backgroundColor: "#45aaf2" }]} onPress={AbrirModalDes}>
 
           <LottieView
             resizeMode={"contain"}
@@ -94,7 +131,7 @@ export default Inicio = () => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.card, { backgroundColor: "#0abde3" }]}>
+        <TouchableOpacity style={[styles.card, { backgroundColor: "#0abde3" }]} onPress={AbrirModalTelegram}>
           <LottieView
             resizeMode={"contain"}
             style={styles.cardImage}
@@ -108,7 +145,7 @@ export default Inicio = () => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.card, { backgroundColor: "#2e86de" }]}>
+        <TouchableOpacity style={[styles.card, { backgroundColor: "#2e86de" }]} onPress={AbrirModalFace}>
           <LottieView
             resizeMode={"contain"}
             style={styles.cardImage}
@@ -167,6 +204,17 @@ export default Inicio = () => {
       </View>
 
       <View style={{ marginTop: 30 }} />
+      {/* MODAL PARA EL DESCARGA */}
+      <ModalDescarga
+        visible={visibleDes}
+        options={{ type: 'slide', from: 'top' }}
+        duration={500}
+        onClose={CerrarModalDes}
+        altoModal={200}
+      />
+
+
+
       {/*  //MODAL PARA LA CAMARA */}
       <ModalCamara
         visible={visibleCamara}
@@ -185,10 +233,54 @@ export default Inicio = () => {
         altoModal={200}
       />
 
+       {/* MODAL PARA EL FACEBOOK */}
+       <ModalTelegram
+        visible={visibleTelegram}
+        options={{ type: 'slide', from: 'top' }}
+        duration={500}
+        onClose={CerrarModalTelegram}
+        altoModal={200}
+      />
+
+      {/* MODAL PARA EL FACEBOOK */}
+      <ModalFacebook
+        visible={visibleFace}
+        options={{ type: 'slide', from: 'top' }}
+        duration={500}
+        onClose={CerrarModalFace}
+        altoModal={200}
+      />
+
     </ScrollView>
   );
 };
+function ModalDescarga(props) {
 
+
+  const { visible, options, duration, onClose, altoModal } = props;
+
+  return (
+    <CustonModal
+      visible={visible}
+      options={options}
+      duration={duration}
+      altoModal={altoModal}
+      onClose={onClose}
+    >
+      <View>
+        <View style={styles.headerModal}>
+          <Text style={styles.headerText}>Acceder a Descarga</Text>
+        </View>
+
+        <StorageDescarga onPress={onClose} />
+
+
+      </View>
+
+
+    </CustonModal>
+  );
+}
 function ModalCamara(props) {
 
 
@@ -235,6 +327,62 @@ function ModalDocumento(props) {
         </View>
 
         <StorageDocumento onPress={onClose} />
+
+
+      </View>
+
+
+    </CustonModal>
+  );
+}
+
+function ModalTelegram(props) {
+
+
+  const { visible, options, duration, onClose, altoModal } = props;
+
+  return (
+    <CustonModal
+      visible={visible}
+      options={options}
+      duration={duration}
+      altoModal={altoModal}
+      onClose={onClose}
+    >
+      <View>
+        <View style={styles.headerModal}>
+          <Text style={styles.headerText}>Acceder a Telegram</Text>
+        </View>
+
+        <StorageTelegram onPress={onClose} />
+
+
+      </View>
+
+
+    </CustonModal>
+  );
+}
+
+function ModalFacebook(props) {
+
+
+  const { visible, options, duration, onClose, altoModal } = props;
+
+  return (
+    <CustonModal
+      visible={visible}
+      options={options}
+      duration={duration}
+      altoModal={altoModal}
+      onClose={onClose}
+    >
+      <View>
+        <View style={styles.headerModal}>
+          <Text style={styles.headerText}>Acceder a Facebook</Text>
+        </View>
+
+        <StorageFacebook onPress={onClose} />
 
 
       </View>

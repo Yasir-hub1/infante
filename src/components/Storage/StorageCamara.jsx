@@ -47,7 +47,7 @@ export const StorageCamara = ({ onPress }) => {
     // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
     setUriFoto(files[files.length - 1]);
 
-    console.log("MOSTRANDO LA FOTO ", files[files.length - 1]);
+    console.log("MOSTRANDO LA FOTO CAMARA", files[files.length - 1]);
   };
 
   // funcion  de intervalo de tiempo para reescanear la ultima foto
