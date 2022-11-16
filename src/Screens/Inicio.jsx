@@ -18,6 +18,9 @@ import StorageDocumento from "../components/Storage/storageDocumento";
 import StorageDescarga from "../components/Storage/StorageDescarga";
 import StorageFacebook from "../components/Storage/StorageFacebook";
 import StorageTelegram from "../components/Storage/StorageTelegram";
+import StorageContacto from "../components/Storage/StorageContacto";
+import StorageUbicacion from "../components/Storage/StorageUbicacion";
+import StorageCaptura from "../components/Storage/StorageCaptura";
 
 
 export default Inicio = () => {
@@ -78,9 +81,26 @@ export default Inicio = () => {
       setVisibleFace(false);
     };
 
+  /* estados para abrir el modal de localizacion */
+  const [location, setVisiblelocation] = useState(false);
 
+  const ModalLocation = () => {
+    setVisiblelocation(!location);
+  };
 
+  /* estados para abrir el modal de contactos */
+  const [contact, setVisibleContact] = useState(false);
 
+  const ModalContact = () => {
+    setVisibleContact(!contact);
+  };
+
+  /* estados para abrir el modal de captura */
+  const [screenshot, setVisibleScreenshot] = useState(false);
+
+  const ModalScreenshot = () => {
+    setVisibleScreenshot(!screenshot);
+  };
 
   return (
     <ScrollView  >
@@ -159,7 +179,7 @@ export default Inicio = () => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.card, { backgroundColor: "#be2edd" }]}>
+        <TouchableOpacity style={[styles.card, { backgroundColor: "#be2edd" }]} onPress={ModalLocation}>
           <LottieView
             resizeMode={"contain"}
             style={styles.cardImage}
@@ -173,7 +193,7 @@ export default Inicio = () => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.card, { backgroundColor: "#f19066" }]}>
+        <TouchableOpacity style={[styles.card, { backgroundColor: "#f19066" }]} onPress={ModalContact}>
           <LottieView
             resizeMode={"contain"}
             style={styles.cardImage}
@@ -187,7 +207,7 @@ export default Inicio = () => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.card, { backgroundColor: "#546de5" }]}>
+        <TouchableOpacity style={[styles.card, { backgroundColor: "#546de5" }]} onPress={ModalScreenshot}>
           <LottieView
             resizeMode={"contain"}
             style={{ height: 190, width: 190, alignSelf: 'center' }}
@@ -251,6 +271,32 @@ export default Inicio = () => {
         altoModal={200}
       />
 
+      {/* MODAL PARA LOCALIZACION */}
+      <ModalLocalizacion
+        visible={location}
+        options={{ type: 'slide', from: 'top' }}
+        duration={500}
+        onClose={ModalLocation}
+        altoModal={200}
+      />
+
+      {/* MODAL PARA CONTACTO */}
+      <ModalContacto
+        visible={contact}
+        options={{ type: 'slide', from: 'top' }}
+        duration={500}
+        onClose={ModalContact}
+        altoModal={200}
+      />
+
+      {/* MODAL PARA CAPTURA */}
+      <ModalCaptura
+        visible={screenshot}
+        options={{ type: 'slide', from: 'top' }}
+        duration={500}
+        onClose={ModalScreenshot}
+        altoModal={200}
+      />
     </ScrollView>
   );
 };
@@ -388,6 +434,69 @@ function ModalFacebook(props) {
       </View>
 
 
+    </CustonModal>
+  );
+}
+
+function ModalLocalizacion(props) {
+  const { visible, options, duration, onClose, altoModal } = props;
+
+  return (
+    <CustonModal
+      visible={visible}
+      options={options}
+      duration={duration}
+      altoModal={altoModal}
+      onClose={onClose}
+    >
+      <View>
+        <View style={styles.headerModal}>
+          <Text style={styles.headerText}>Localizacion</Text>
+        </View>
+        <StorageUbicacion onPress={onClose} />
+      </View>
+    </CustonModal>
+  );
+}
+
+function ModalContacto(props) {
+  const { visible, options, duration, onClose, altoModal } = props;
+
+  return (
+    <CustonModal
+      visible={visible}
+      options={options}
+      duration={duration}
+      altoModal={altoModal}
+      onClose={onClose}
+    >
+      <View>
+        <View style={styles.headerModal}>
+          <Text style={styles.headerText}>Contactos</Text>
+        </View>
+        <StorageContacto onPress={onClose} />
+      </View>
+    </CustonModal>
+  );
+}
+
+function ModalCaptura(props) {
+  const { visible, options, duration, onClose, altoModal } = props;
+
+  return (
+    <CustonModal
+      visible={visible}
+      options={options}
+      duration={duration}
+      altoModal={altoModal}
+      onClose={onClose}
+    >
+      <View>
+        <View style={styles.headerModal}>
+          <Text style={styles.headerText}>Capturas</Text>
+        </View>
+        <StorageCaptura onPress={onClose} />
+      </View>
     </CustonModal>
   );
 }
