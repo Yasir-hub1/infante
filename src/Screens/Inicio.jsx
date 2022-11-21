@@ -9,7 +9,7 @@ import {
 
 } from "react-native";
 import CustonModal from "../components/CustonModal";
-
+import CustomButton from "../components/CustonButton";
 import LottieView from "lottie-react-native";
 
 //Metodos para la vista
@@ -35,51 +35,51 @@ export default Inicio = () => {
     setVisibleCamara(false);
   };
 
-    /* estados para abrir el modal de del documento */
-    const [visibleDoc, setVisibleDoc] = useState(false);
+  /* estados para abrir el modal de del documento */
+  const [visibleDoc, setVisibleDoc] = useState(false);
 
-    const AbrirModalDoc = () => {
-      setVisibleDoc(true);
-    };
-  
-    const CerrarModalDoc= () => {
-      setVisibleDoc(false);
-    };
+  const AbrirModalDoc = () => {
+    setVisibleDoc(true);
+  };
+
+  const CerrarModalDoc = () => {
+    setVisibleDoc(false);
+  };
 
 
-    /* estados para abrir el modal de del DESCARGA */
-    const [visibleDes, setVisibleDesc] = useState(false);
+  /* estados para abrir el modal de del DESCARGA */
+  const [visibleDes, setVisibleDesc] = useState(false);
 
-    const AbrirModalDes = () => {
-      setVisibleDesc(true);
-    };
-  
-    const CerrarModalDes= () => {
-      setVisibleDesc(false);
-    };
+  const AbrirModalDes = () => {
+    setVisibleDesc(true);
+  };
 
-     /* estados para abrir el modal de del TELEGRAM */
-     const [visibleTelegram, setVisibleTelegram] = useState(false);
+  const CerrarModalDes = () => {
+    setVisibleDesc(false);
+  };
 
-     const AbrirModalTelegram = () => {
-       setVisibleTelegram(true);
-     };
-   
-     const CerrarModalTelegram= () => {
-       setVisibleTelegram(false);
-     };
- 
+  /* estados para abrir el modal de del TELEGRAM */
+  const [visibleTelegram, setVisibleTelegram] = useState(false);
 
-    /* estados para abrir el modal de del FACEBOOK */
-    const [visibleFace, setVisibleFace] = useState(false);
+  const AbrirModalTelegram = () => {
+    setVisibleTelegram(true);
+  };
 
-    const AbrirModalFace = () => {
-      setVisibleFace(true);
-    };
-  
-    const CerrarModalFace= () => {
-      setVisibleFace(false);
-    };
+  const CerrarModalTelegram = () => {
+    setVisibleTelegram(false);
+  };
+
+
+  /* estados para abrir el modal de del FACEBOOK */
+  const [visibleFace, setVisibleFace] = useState(false);
+
+  const AbrirModalFace = () => {
+    setVisibleFace(true);
+  };
+
+  const CerrarModalFace = () => {
+    setVisibleFace(false);
+  };
 
   /* estados para abrir el modal de localizacion */
   const [location, setVisiblelocation] = useState(false);
@@ -223,7 +223,23 @@ export default Inicio = () => {
 
       </View>
 
+
       <View style={{ marginTop: 30 }} />
+
+      {/*  //TODO: BOTONES PARA INICIAR APP O CERRAR SESION */}
+      <View style={{
+        flexDirection: 'row',
+        flexWrap: 'wrap', alignSelf: "center"
+      }}>
+
+        <CustomButton label={"Iniciar"} padding={10} />
+        <View style={{ margin: 10 }} />
+        <CustomButton label={"Cerrar sesion"} padding={10} />
+
+      </View>
+
+
+
       {/* MODAL PARA EL DESCARGA */}
       <ModalDescarga
         visible={visibleDes}
@@ -253,8 +269,8 @@ export default Inicio = () => {
         altoModal={200}
       />
 
-       {/* MODAL PARA EL FACEBOOK */}
-       <ModalTelegram
+      {/* MODAL PARA EL FACEBOOK */}
+      <ModalTelegram
         visible={visibleTelegram}
         options={{ type: 'slide', from: 'top' }}
         duration={500}
@@ -565,15 +581,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12.5,
     paddingHorizontal: 16,
   },
-  cardFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: 12.5,
-    paddingBottom: 25,
-    paddingHorizontal: 16,
-    borderBottomLeftRadius: 1,
-    borderBottomRightRadius: 1,
-  },
+
   cardImage: {
     height: 150,
     width: 150,
