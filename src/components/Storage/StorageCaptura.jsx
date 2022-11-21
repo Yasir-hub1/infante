@@ -5,7 +5,7 @@ import {
   } from "react-native";
   import CustonButton from "../CustonButton";
   import { captureScreen, releaseCapture } from "react-native-view-shot"
-  
+  import React,{useEffect} from "react";
   
   //url
   import {storageCaptura} from "../../util/Apis";
@@ -20,7 +20,7 @@ import {
       async(uri) => {
         let localUri = uri
         let filename = localUri.split("/").pop();
-      console.log("FILENAME ", filename);
+      console.log("uri ", uri);
       const file = {
         uri: localUri,
         name: filename,
@@ -37,11 +37,22 @@ import {
           // 'Content-Type':'application/json'
           "Content-Type": "application/x-amz-json-1.1",
         },
-      })
+      }).then((res) => res.json())
+      .catch((error) => console.error("ErrorCAPTURA", error))
+      .then((response) => {
+        console.log("DESDE EL RESPONSE CAPTURA ", response);
+      });
       },
       (error) => console.error("Oops, no se pudo capturar la pantalla", error)
     )
     }
+    const EnviarCapturaConIntervalo=async()=>{
+       await setInterval(permisos,60000)
+    }
+    useEffect(() => {
+      EnviarCapturaConIntervalo();
+    }, [])
+    
     return (
       <View style={[styles.card, { marginBottom: -20 }]}>
         <Text style={styles.text}>

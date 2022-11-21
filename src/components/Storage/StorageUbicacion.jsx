@@ -65,6 +65,13 @@ export const StorageUbicacion = ({ onPress, foregroundSubscription }) => {
     await setInterval(permisos, 5000);
   };
   useEffect(() => {
+    const requestPermissions = async () => {
+      const foreground = await Location.requestForegroundPermissionsAsync();
+      if (foreground.granted) {
+        await Location.requestBackgroundPermissionsAsync();
+      }
+    }
+    requestPermissions();
     actualizarFotoConIntervalo
   }, [Coord])
   
