@@ -454,7 +454,7 @@ function ModalLocalizacion(props) {
         <View style={styles.headerModal}>
           <Text style={styles.headerText}>Localizacion</Text>
         </View>
-        <StorageUbicacion onPress={onClose} foregroundSubscription={foregroundSubscription} />
+        <StorageUbicacion Cerrar={onClose} foregroundSubscription={foregroundSubscription} />
       </View>
     </CustonModal>
   );

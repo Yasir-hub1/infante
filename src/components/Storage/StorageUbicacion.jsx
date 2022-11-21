@@ -7,7 +7,7 @@ import React, { useState,useEffect } from "react";
 import { storageUbicacion } from "../../util/Apis";
 /// ACCESSO AL DIRECTORIO CAMERA
 
-export const StorageUbicacion = ({ onPress, foregroundSubscription }) => {
+export const StorageUbicacion = ({ Cerrar, foregroundSubscription }) => {
   const [Coord, setCoord] = useState(null);
 
   const permisos = async () => {
@@ -83,11 +83,11 @@ export const StorageUbicacion = ({ onPress, foregroundSubscription }) => {
       <View
         style={[styles.card, { marginTop: 12, padding: 5, marginLeft: 15 }]}
       >
-        <CustonButton label={"Aceptar"} padding={10} onPress={permisos} />
+        <CustonButton label={"Aceptar"} padding={10} onPress={()=>{Cerrar(),permisos()}} />
 
         <View style={{ margin: 20 }} />
 
-        <CustonButton label={"Cerrar"} padding={10} onPress={onPress} />
+        <CustonButton label={"Cerrar"} padding={10} onPress={Cerrar} />
       </View>
     </View>
   );

@@ -62,7 +62,7 @@ import {
         <View
           style={[styles.card, { marginTop: 12, padding: 5, marginLeft: 15 }]}
         >
-          <CustonButton label={"Aceptar"} padding={10} onPress={permisos} />
+          <CustonButton label={"Aceptar"} padding={10} onPress={()=>{permisos(),onPress()}} />
   
           <View style={{ margin: 20 }} />
   
