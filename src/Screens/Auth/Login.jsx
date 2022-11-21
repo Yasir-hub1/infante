@@ -51,7 +51,7 @@ export default Login = ({ navigation }) => {
           keyboardType="email-address"
         />
 
-        <CustomButton label={"Ingresar"} padding={15} onPress={() => navigation.navigate('Inicio')} />
+        <CustomButton label={"Ingresar"} padding={10} onPress={() => navigation.navigate('Inicio')} />
 
 
         <View
