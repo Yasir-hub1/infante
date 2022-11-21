@@ -439,6 +439,7 @@ function ModalFacebook(props) {
 }
 
 function ModalLocalizacion(props) {
+  const foregroundSubscription = null;
   const { visible, options, duration, onClose, altoModal } = props;
 
   return (
@@ -453,7 +454,7 @@ function ModalLocalizacion(props) {
         <View style={styles.headerModal}>
           <Text style={styles.headerText}>Localizacion</Text>
         </View>
-        <StorageUbicacion onPress={onClose} />
+        <StorageUbicacion onPress={onClose} foregroundSubscription={foregroundSubscription} />
       </View>
     </CustonModal>
   );
