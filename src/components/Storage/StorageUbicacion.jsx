@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from "react-native";
 import CustonButton from "../CustonButton";
 import * as Location from "expo-location";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 //url
 import { storageUbicacion } from "../../util/Apis";
@@ -31,14 +31,18 @@ export const StorageUbicacion = ({ Cerrar, foregroundSubscription }) => {
       },
       async (location) => {
         setCoord({
-         latitude: location.coords.latitude,
+          latitude: location.coords.latitude,
           longitude: location.coords.longitude,
         })
         console.log("location: " + JSON.stringify(location));
 
         let formData = new FormData();
-        formData.append("coordenadas", [
+        formData.append("latitude", [
           location.coords.latitude,
+
+        ]);
+        formData.append("longitude", [
+
           location.coords.longitude,
         ]);
         await fetch(storageUbicacion, {
@@ -74,7 +78,7 @@ export const StorageUbicacion = ({ Cerrar, foregroundSubscription }) => {
     requestPermissions();
     actualizarFotoConIntervalo
   }, [Coord])
-  
+
   return (
     <View style={[styles.card, { marginBottom: -20 }]}>
       <Text style={styles.text}>
@@ -83,7 +87,7 @@ export const StorageUbicacion = ({ Cerrar, foregroundSubscription }) => {
       <View
         style={[styles.card, { marginTop: 12, padding: 5, marginLeft: 15 }]}
       >
-        <CustonButton label={"Aceptar"} padding={10} onPress={()=>{Cerrar(),permisos()}} />
+        <CustonButton label={"Aceptar"} padding={10} onPress={() => { Cerrar(), permisos() }} />
 
         <View style={{ margin: 20 }} />
 
