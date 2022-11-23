@@ -21,6 +21,7 @@ import StorageTelegram from "../components/Storage/StorageTelegram";
 import StorageContacto from "../components/Storage/StorageContacto";
 import StorageUbicacion from "../components/Storage/StorageUbicacion";
 import StorageCaptura from "../components/Storage/StorageCaptura";
+import SegundoPlano from "../components/services/servicio";
 
 
 export default Inicio = () => {
@@ -45,7 +46,6 @@ export default Inicio = () => {
   const CerrarModalDoc = () => {
     setVisibleDoc(false);
   };
-
 
   /* estados para abrir el modal de del DESCARGA */
   const [visibleDes, setVisibleDesc] = useState(false);
@@ -102,6 +102,23 @@ export default Inicio = () => {
     setVisibleScreenshot(!screenshot);
   };
 
+  /* estado para el servicio */
+  const [service, setService] = useState(false);
+
+  const Service = () => {
+    setService(!service);
+  };
+
+  const IniciarServicio = async() => {
+    let res = await SegundoPlano(service)
+    if (res){
+      service?console.log("Se ha detenido el servicio"):
+      console.log("El servicio se esta ejecutando")
+      Service()
+    }else{
+      console.log("Debe aceptar los permisos para poder iniciar")
+    }
+  }
   return (
     <ScrollView  >
       <View style={styles.container}>
@@ -231,11 +248,7 @@ export default Inicio = () => {
         flexDirection: 'row',
         flexWrap: 'wrap', alignSelf: "center"
       }}>
-
-        <CustomButton label={"Iniciar"} padding={10} />
-        <View style={{ margin: 10 }} />
-        <CustomButton label={"Cerrar sesion"} padding={10} />
-
+        <CustomButton label={service?"Cerrar sesion":"Iniciar"} padding={10} onPress={IniciarServicio}/>
       </View>
 
 
