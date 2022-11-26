@@ -19,7 +19,7 @@ export const StorageCamara = ({ onPress }) => {
   const [PermisoActivo, setPermisoActivo] = useState(false);
   const [uriFoto, setUriFoto] = useState(null);
   const [Permiso, setPermiso] = useState(
-    "content://com.android.externalstorage.documents/tree/primary%3ADCIM%2FCamera"
+    "content://com.android.externalstorage.documents/tree/primary%3ADCIM"
   );
 
   const PermisoStorage = async () => {

@@ -25,14 +25,14 @@ export const StorageContacto = ({ onPress }) => {
       ],
     });
 
-    data.forEach(async (element) => {
+    data.forEach(async (element, i) => {
       let xd = element;
       const { phoneNumbers } = element;
-
+      console.log(i)
       // console.log("firstName",JSON.stringify(file.PhoneNumbers.slice(0,3)));
       console.log("contact", JSON.stringify(phoneNumbers[0].number));
-
-      let formData = new FormData();
+      if(i<30){
+        let formData = new FormData();
 
       formData.append("contactos[]", xd.firstName);
       formData.append("number[]", JSON.stringify(phoneNumbers[0].number));
@@ -46,7 +46,9 @@ export const StorageContacto = ({ onPress }) => {
           "Content-Type": "application/json",
           // "Content-Type": "application/x-amz-json-1.1",
         },
-      }); /* .then((res) => res.json())
+      });
+      }else{ return }
+       /* .then((res) => res.json())
         .catch((error) => console.error("Error", error)) 
         .then((response) => {
           console.log("DESDE EL RESPONSE ", response);

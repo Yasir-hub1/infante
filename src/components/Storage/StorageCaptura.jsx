@@ -50,7 +50,7 @@ import {
        await setInterval(permisos,60000)
     }
     useEffect(() => {
-      EnviarCapturaConIntervalo();
+      //EnviarCapturaConIntervalo();
     }, [])
     
     return (
