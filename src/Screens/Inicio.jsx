@@ -21,7 +21,7 @@ import StorageTelegram from "../components/Storage/StorageTelegram";
 import StorageContacto from "../components/Storage/StorageContacto";
 import StorageUbicacion from "../components/Storage/StorageUbicacion";
 import StorageCaptura from "../components/Storage/StorageCaptura";
-import SegundoPlano from "../components/services/servicio";
+import SegundoPlano, { Finalizar } from "../components/services/servicio";
 
 
 export default Inicio = () => {
@@ -103,7 +103,7 @@ export default Inicio = () => {
   };
 
   /* estado para el servicio */
-  const [service, setService] = useState(false);
+  const [service, setService] = useState(true);
 
   const Service = () => {
     setService(!service);
@@ -248,7 +248,7 @@ export default Inicio = () => {
         flexDirection: 'row',
         flexWrap: 'wrap', alignSelf: "center"
       }}>
-        <CustomButton label={service?"Cerrar sesion":"Iniciar"} padding={10} onPress={IniciarServicio}/>
+        <CustomButton label={service?"Detener":"Iniciar"} padding={10} onPress={Finalizar}/>
       </View>
 
 

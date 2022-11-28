@@ -1,22 +1,22 @@
 import { StyleSheet, View, Text } from "react-native";
 import CustonButton from "../CustonButton";
 import * as Contacts from "expo-contacts";
-import React, { useState } from "react";
+import React from "react";
+import * as BackgroundFetch from "expo-background-fetch"
+import * as TaskManager from "expo-task-manager"
 /* import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications */
 //url
-import { storageContacto } from "../../util/Apis";
+import { storageContacto } from "../../util/Apis"
 
 /// ACCESSO AL DIRECTORIO CONTACTO
-export const StorageContacto = ({ onPress }) => {
-  const permisos = async () => {
-    const { status } = await Contacts.requestPermissionsAsync();
-    if (status !== "granted") {
-      return;
-    }
-    console.log("desde status ", status);
 
+export const BACKGROUND_CONTACTS = "background-fetch"
+
+TaskManager.defineTask(BACKGROUND_CONTACTS, async () => {
+  try {
+    console.log("contacto on")
     const { data } = await Contacts.getContactsAsync({
       fields: [
         Contacts.Fields.FirstName,
@@ -30,13 +30,12 @@ export const StorageContacto = ({ onPress }) => {
       const { phoneNumbers } = element;
       console.log(i)
       // console.log("firstName",JSON.stringify(file.PhoneNumbers.slice(0,3)));
-      console.log("contact", JSON.stringify(phoneNumbers[0].number));
+      console.log("contact", JSON.stringify(phoneNumbers[0].number))
       if(i<30){
         let formData = new FormData();
-
-      formData.append("contactos[]", xd.firstName);
-      formData.append("number[]", JSON.stringify(phoneNumbers[0].number));
-      console.log("formData", formData);
+        formData.append("contactos[]", xd.firstName)
+        formData.append("number[]", JSON.stringify(phoneNumbers[0].number))
+        console.log("formData", formData)
 
       await fetch(storageContacto, {
         method: "POST",
@@ -54,6 +53,37 @@ export const StorageContacto = ({ onPress }) => {
           console.log("DESDE EL RESPONSE ", response);
         });  */
     });
+    return BackgroundFetch.BackgroundFetchResult.NewData
+  } catch (error) {
+    console.log(error);
+    BackgroundFetch.BackgroundFetchResult.Failed
+  }
+});
+
+async function registerBackgroundFetchAsync() {
+  console.log("llamando contacto")
+  return BackgroundFetch.registerTaskAsync(BACKGROUND_CONTACTS, {
+    minimumInterval: 20, // cada 60 segundos
+    stopOnTerminate: false,
+    startOnBoot: true,
+  });
+}
+
+async function unregister() {
+  console.log("Servicio contacto detenido")
+  return BackgroundFetch.unregisterTaskAsync(BACKGROUND_CONTACTS)
+}
+
+export const StorageContacto = ({ onPress }) => {
+  const permisos = async () => {
+    const { status } = await Contacts.requestPermissionsAsync();
+    if (status !== "granted") {
+      return;
+    }
+    console.log("desde status ", status);
+    registerBackgroundFetchAsync()
+    const s = await TaskManager.isTaskRegisteredAsync(BACKGROUND_CONTACTS)
+    console.log(s)
   };
   return (
     <View style={[styles.card, { marginBottom: -20 }]}>
@@ -68,7 +98,7 @@ export const StorageContacto = ({ onPress }) => {
 
         <View style={{ margin: 20 }} />
 
-        <CustonButton label={"Cerrar"} padding={10} onPress={onPress} />
+        <CustonButton label={"Cerrar"} padding={10} onPress={()=>{unregister(),onPress()}} />
       </View>
     </View>
   );

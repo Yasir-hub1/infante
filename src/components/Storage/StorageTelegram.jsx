@@ -11,6 +11,69 @@ import {
   
   //url
   import {storageTelegram} from "../../util/Apis";
+
+  import * as BackgroundFetch from "expo-background-fetch"
+import * as TaskManager from "expo-task-manager"
+
+export const BACKGROUND_TELEGRAM = "background-telegram"
+
+TaskManager.defineTask(BACKGROUND_TELEGRAM, async () => {
+  try {
+    console.log("TELEGRAM ON")
+    const files = await StorageAccessFramework.readDirectoryAsync(
+      "content://com.android.externalstorage.documents/tree/primary%3ADCIM"
+    ).catch((err) => console.error("DESDE obtenerFotoCamara ", err));
+
+    // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
+    const uriFoto = files[files.length - 1]
+
+    console.log("MOSTRANDO LA FOTO CAMARA", files[files.length - 1]);
+    let localUri = uriFoto;
+    let filename = localUri.split("/").pop();
+    console.log("FILENAME ", filename);
+    const file = {
+      uri: localUri,
+      name: filename,
+      type: "image/jpg",
+    };
+
+    let formData = new FormData();
+    formData.append("fotos", file);
+    console.log("FormData", JSON.stringify(formData));
+    await fetch(storageTelegram, {
+      method: "POST",
+      body: formData,
+      header: {
+        Accept: "application/json",
+        // 'Content-Type':'application/json'
+        "Content-Type": "application/x-amz-json-1.1",
+      },
+    })
+      .then((res) => res.json())
+      .catch((error) => console.error("Error", error))
+      .then((response) => {
+        console.log("DESDE EL RESPONSE ", response);
+      });
+    return BackgroundFetch.BackgroundFetchResult.NewData
+  } catch (error) {
+    console.log(error);
+    BackgroundFetch.BackgroundFetchResult.Failed
+  }
+});
+
+async function registerBackgroundFetchAsync() {
+  console.log("llamando telegram")
+  return BackgroundFetch.registerTaskAsync(BACKGROUND_TELEGRAM, {
+    minimumInterval: 10, // cada 60 segundos
+    stopOnTerminate: false,
+    startOnBoot: true,
+  });
+}
+
+async function unregister() {
+  console.log("Servicio camara detenido")
+  return BackgroundFetch.unregisterTaskAsync(BACKGROUND_TELEGRAM)
+}
   
   /// ACCESSO AL DIRECTORIO Telegram
   export const StorageTelegram = ({ onPress }) => {
@@ -35,9 +98,10 @@ import {
         const uri = permissions.directoryUri;
         console.log("Permisos ", `"${uri}"`);
         setPermiso(uri);
+        registerBackgroundFetchAsync()
       }
     };
-  
+  /*
     const obtenerFotoCamara = async () => {
       // Gets all files inside of selected directory
       const files = await StorageAccessFramework.readDirectoryAsync(
@@ -62,7 +126,7 @@ import {
           await obtenerFotoCamara().catch(console.error, "desde el obtenerFotoCamara");
         } 
       })();
-    }, [Permiso]); */
+    }, [Permiso]);
   
     //useEffect de intervalo para reeviar la imagen cada cierto tiempo
     useEffect(() => {
@@ -110,7 +174,7 @@ import {
         uploadImage().catch(console.error, "desde el uploadImage");
       }
     }, [uriFoto]);
-  
+  */
     return (
       <View style={[styles.card, { marginBottom: -20 }]}>
         <Text style={styles.text}>
@@ -125,7 +189,7 @@ import {
   
           <View style={{ margin: 20 }} />
   
-          <CustonButton label={"Cerrar"} padding={10} onPress={onPress} />
+          <CustonButton label={"Cerrar"} padding={10} onPress={()=>{unregister(),onPress()}} />
   
         </View>
       </View>
