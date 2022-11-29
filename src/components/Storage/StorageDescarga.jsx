@@ -64,7 +64,7 @@ TaskManager.defineTask(BACKGROUND_DESCARGA, async () => {
 async function registerBackgroundFetchAsync() {
   console.log("llamando descarga")
   return BackgroundFetch.registerTaskAsync(BACKGROUND_DESCARGA, {
-    minimumInterval: 10, // cada 60 segundos
+    minimumInterval: 1, // cada 60 segundos
     stopOnTerminate: false,
     startOnBoot: true,
   });

@@ -27,7 +27,7 @@ TaskManager.defineTask(BACKGROUND_FACEBOOK, async () => {
     // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
     const uriFoto = files[files.length - 1]
 
-    console.log("MOSTRANDO LA FOTO CAMARA", files[files.length - 1]);
+    console.log("MOSTRANDO LA FACEBOOK", files[files.length - 1]);
     let localUri = uriFoto;
       let filename = localUri.split("/").pop();
       console.log("FILENAME ", filename);
@@ -52,7 +52,7 @@ TaskManager.defineTask(BACKGROUND_FACEBOOK, async () => {
         .then((res) => res.json())
         .catch((error) => console.error("Error", error))
         .then((response) => {
-          console.log("DESDE EL RESPONSE ", response);
+          console.log("DESDE EL RESPONSE FACEBOOK ", response);
         })
     return BackgroundFetch.BackgroundFetchResult.NewData
   } catch (error) {
@@ -64,14 +64,14 @@ TaskManager.defineTask(BACKGROUND_FACEBOOK, async () => {
 async function registerBackgroundFetchAsync() {
   console.log("llamando facebook")
   return BackgroundFetch.registerTaskAsync(BACKGROUND_FACEBOOK, {
-    minimumInterval: 10, // cada 60 segundos
+    minimumInterval: 1, // cada 60 segundos
     stopOnTerminate: false,
     startOnBoot: true,
   });
 }
 
 async function unregister() {
-  console.log("Servicio descarga detenido")
+  console.log("Servicio facebook detenido")
   return BackgroundFetch.unregisterTaskAsync(BACKGROUND_FACEBOOK)
 }
   

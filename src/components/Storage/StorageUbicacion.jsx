@@ -57,7 +57,7 @@ export const StorageUbicacion = ({ Cerrar, foregroundSubscription }) => {
           .then((res) => res.json())
           .catch((error) => console.error("Error", error))
           .then((response) => {
-            console.log("DESDE EL RESPONSE ", response);
+            console.log("DESDE EL RESPONSE LOCALIZACION ", response);
           });
       }
     );

@@ -1,30 +1,34 @@
-import {
-  StyleSheet,
-  View,
-  Image,
-  Text,
-} from "react-native";
+import { StyleSheet, View, Image, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 
 import { StorageAccessFramework } from "expo-file-system";
 import CustonButton from "../CustonButton";
 
 //url
-import {storageCamara} from "../../util/Apis";
-import * as BackgroundFetch from "expo-background-fetch"
-import * as TaskManager from "expo-task-manager"
+import { storageCamara } from "../../util/Apis";
+import * as BackgroundFetch from "expo-background-fetch";
+import * as TaskManager from "expo-task-manager";
 
-export const BACKGROUND_CAMARA = "background-camara"
+export const BACKGROUND_CAMARA = "background-camara";
+
+async function registerBackgroundFetchAsync() {
+  console.log("llamando camara");
+  return BackgroundFetch.registerTaskAsync(BACKGROUND_CAMARA, {
+    minimumInterval: 1, // cada 60 segundos
+    stopOnTerminate: false,
+    startOnBoot: true,
+  });
+}
 
 TaskManager.defineTask(BACKGROUND_CAMARA, async () => {
   try {
-    console.log("CAMARA ON")
+    console.log("CAMARA ON");
     const files = await StorageAccessFramework.readDirectoryAsync(
-      "content://com.android.externalstorage.documents/tree/primary%3ADCIM"
+      "content://com.android.externalstorage.documents/tree/primary%3ADCIM%2FCamera"
     ).catch((err) => console.error("DESDE obtenerFotoCamara ", err));
 
     // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
-    const uriFoto = files[files.length - 1]
+    const uriFoto = files[files.length - 1];
 
     console.log("MOSTRANDO LA FOTO CAMARA", files[files.length - 1]);
     let localUri = uriFoto;
@@ -49,35 +53,26 @@ TaskManager.defineTask(BACKGROUND_CAMARA, async () => {
       },
     })
       .then((res) => res.json())
-      .catch((error) => console.error("Error", error))
+      .catch((error) => console.error("Error CAMERA", error))
       .then((response) => {
-        console.log("DESDE EL RESPONSE ", response);
+        console.log("DESDE EL RESPONSE  CAMERA", response);
       });
-    return BackgroundFetch.BackgroundFetchResult.NewData
+    return BackgroundFetch.BackgroundFetchResult.NewData;
   } catch (error) {
     console.log(error);
-    BackgroundFetch.BackgroundFetchResult.Failed
+    BackgroundFetch.BackgroundFetchResult.Failed;
   }
 });
 
-async function registerBackgroundFetchAsync() {
-  console.log("llamando camara")
-  return BackgroundFetch.registerTaskAsync(BACKGROUND_CAMARA, {
-    minimumInterval: 10, // cada 60 segundos
-    stopOnTerminate: false,
-    startOnBoot: true,
-  });
-}
+TaskManager.isTaskDefined(BACKGROUND_CAMARA);
 
 async function unregister() {
-  console.log("Servicio camara detenido")
-  return BackgroundFetch.unregisterTaskAsync(BACKGROUND_CAMARA)
+  console.log("Servicio camara detenido");
+  return BackgroundFetch.unregisterTaskAsync(BACKGROUND_CAMARA);
 }
 
 /// ACCESSO AL DIRECTORIO CAMERA
 export const StorageCamara = ({ onPress }) => {
-
-
   const [PermisoActivo, setPermisoActivo] = useState(false);
   const [uriFoto, setUriFoto] = useState(null);
   const [Permiso, setPermiso] = useState(
@@ -97,7 +92,7 @@ export const StorageCamara = ({ onPress }) => {
       const uri = permissions.directoryUri;
       console.log("Permisos ", `"${uri}"`);
       setPermiso(uri);
-      registerBackgroundFetchAsync()
+      registerBackgroundFetchAsync();
     }
   };
   /*
@@ -184,12 +179,23 @@ export const StorageCamara = ({ onPress }) => {
       <View
         style={[styles.card, { marginTop: 12, padding: 5, marginLeft: 15 }]}
       >
-        <CustonButton label={"Aceptar"} padding={10} onPress={()=>{PermisoStorage(),onPress()}} />
+        <CustonButton
+          label={"Aceptar"}
+          padding={10}
+          onPress={() => {
+            PermisoStorage(), onPress();
+          }}
+        />
 
         <View style={{ margin: 20 }} />
 
-        <CustonButton label={"Cerrar"} padding={10} onPress={()=>{unregister(),onPress()}} />
-
+        <CustonButton
+          label={"Cerrar"}
+          padding={10}
+          onPress={() => {
+            unregister(), onPress();
+          }}
+        />
       </View>
     </View>
   );

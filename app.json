@@ -4,7 +4,6 @@
       [
         "expo-media-library",
         {
-          
           "isAccessMediaLocationEnabled": true
         }
       ]
@@ -27,7 +26,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
+        "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -37,12 +40,19 @@
       "permissions": [
         "READ_INTERNAL_STORAGE",
         "INTERNET",
-        "WRITE_EXTERNAL_STORAGE"
-      ]
+        "WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION",
+        "LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION"
+      ],
+      "package": "com.rister.infante"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     }
-    
   }
 }
