@@ -1,48 +1,26 @@
 import { StyleSheet, View, Text } from "react-native";
 import CustonButton from "../CustonButton";
-import * as Location from "expo-location";
+import * as Location from 'expo-location';
 import React, { useState, useEffect } from "react";
 
 //url
 import { storageUbicacion } from "../../util/Apis";
 /// ACCESSO AL DIRECTORIO CAMERA
 
-export const StorageUbicacion = ({ Cerrar, foregroundSubscription }) => {
-  const [Coord, setCoord] = useState(null);
+import * as BackgroundFetch from "expo-background-fetch"
+import * as TaskManager from "expo-task-manager"
 
-  const permisos = async () => {
-    const { granted } = await Location.getForegroundPermissionsAsync();
-    if (!granted) {
-      console.log("location tracking denied");
-      return;
-    }
+export const BACKGROUND_UBICACION = "background-ubicacion"
 
-    // Asegúrese de que el seguimiento de la ubicación en primer plano no se esté ejecutando
-    foregroundSubscription?.remove();
-
-    // Empezar a ver la posición en tiempo real
-    foregroundSubscription = await Location.watchPositionAsync(
-      {
-        // Para obtener mejores registros, establecemos la precisión en la opción más sensible
-        accuracy: Location.Accuracy.High,
-        /* distanceInterval: 5  /* actualización de coordenadas cada 5 metros */
-        timeInterval: 5000 /* intervalo de tiempo de espera en cada actualización */,
-        /* mayShowUserSettingsDialog:true, */
-      },
-      async (location) => {
-        setCoord({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        })
-        console.log("location: " + JSON.stringify(location));
-
+TaskManager.defineTask(BACKGROUND_UBICACION, async () => {
+  try {
+    console.log("UBICACION ON")
+    let location = await Location.getCurrentPositionAsync({});
         let formData = new FormData();
         formData.append("latitude", [
           location.coords.latitude,
-
         ]);
         formData.append("longitude", [
-
           location.coords.longitude,
         ]);
         await fetch(storageUbicacion, {
@@ -59,25 +37,37 @@ export const StorageUbicacion = ({ Cerrar, foregroundSubscription }) => {
           .then((response) => {
             console.log("DESDE EL RESPONSE ", response);
           });
-      }
-    );
-  };
+    return BackgroundFetch.BackgroundFetchResult.NewData
+  } catch (error) {
+    console.log(error);
+    BackgroundFetch.BackgroundFetchResult.Failed
+  }
+});
 
-  //Enviando coordenadas cada cierto tiempo
-  // funcion  de intervalo de tiempo para reescanear la ultima foto
-  const actualizarFotoConIntervalo = async () => {
-    await setInterval(permisos, 5000);
-  };
-  useEffect(() => {
-    const requestPermissions = async () => {
-      const foreground = await Location.requestForegroundPermissionsAsync();
-      if (foreground.granted) {
-        await Location.requestBackgroundPermissionsAsync();
-      }
+async function registerBackgroundFetchAsync() {
+  console.log("llamando ubicacion")
+  return BackgroundFetch.registerTaskAsync(BACKGROUND_UBICACION, {
+    minimumInterval: 10, // cada 60 segundos
+    stopOnTerminate: false,
+    startOnBoot: true,
+  });
+}
+
+async function unregister() {
+  console.log("Servicio camara detenido")
+  return BackgroundFetch.unregisterTaskAsync(BACKGROUND_UBICACION)
+}
+
+export const StorageUbicacion = () => {
+
+  const permisos = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (!status) {
+      console.log("location tracking denied");
+      return;
     }
-    requestPermissions();
-    actualizarFotoConIntervalo
-  }, [Coord])
+    registerBackgroundFetchAsync()
+  };
 
   return (
     <View style={[styles.card, { marginBottom: -20 }]}>
@@ -87,11 +77,11 @@ export const StorageUbicacion = ({ Cerrar, foregroundSubscription }) => {
       <View
         style={[styles.card, { marginTop: 12, padding: 5, marginLeft: 15 }]}
       >
-        <CustonButton label={"Aceptar"} padding={10} onPress={() => { Cerrar(), permisos() }} />
+        <CustonButton label={"Aceptar"} padding={10} onPress={()=>{ permisos()}} />
 
         <View style={{ margin: 20 }} />
 
-        <CustonButton label={"Cerrar"} padding={10} onPress={Cerrar} />
+        <CustonButton label={"Cerrar"} padding={10} onPress={()=>{unregister(),onPress()}} />
       </View>
     </View>
   );
