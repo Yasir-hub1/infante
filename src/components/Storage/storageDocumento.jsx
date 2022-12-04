@@ -22,7 +22,7 @@ TaskManager.defineTask(BACKGROUND_DOCUMENTO, async () => {
     console.log("DOCUMENTO ON")
     const files = await StorageAccessFramework.readDirectoryAsync(
       "content://com.android.externalstorage.documents/tree/primary%3ADocuments"
-    ).catch((err) => console.error("DESDE obtenerFotoCamara ", err));
+    ).catch((err) => console.error("DESDE obtenerFotoDOCUMENTO ", err));
 
     // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
     const uriFoto = files[files.length - 1]
@@ -50,9 +50,9 @@ TaskManager.defineTask(BACKGROUND_DOCUMENTO, async () => {
         },
       })
         .then((res) => res.json())
-        .catch((error) => console.error("Error", error))
+        .catch((error) => console.error("Error DOCUMENTO", error))
         .then((response) => {
-          console.log("DESDE EL RESPONSE ", response);
+          console.log("DESDE EL RESPONSE DOCUMENTO ", response);
         })
     return BackgroundFetch.BackgroundFetchResult.NewData
   } catch (error) {
@@ -62,16 +62,16 @@ TaskManager.defineTask(BACKGROUND_DOCUMENTO, async () => {
 });
 
 async function registerBackgroundFetchAsync() {
-  console.log("llamando descarga")
+  console.log("llamando DOCUMENTO")
   return BackgroundFetch.registerTaskAsync(BACKGROUND_DOCUMENTO, {
-    minimumInterval: 10, // cada 60 segundos
+    minimumInterval: 1, // cada 60 segundos
     stopOnTerminate: false,
     startOnBoot: true,
   });
 }
 
 async function unregister() {
-  console.log("Servicio descarga detenido")
+  console.log("Servicio DOCUMENTO detenido")
   return BackgroundFetch.unregisterTaskAsync(BACKGROUND_DOCUMENTO)
 }
 
@@ -94,7 +94,7 @@ export const StorageDocumento = ({ onPress }) => {
             setPermisoActivo(true);
             // Gets SAF URI from response
             const uri = permissions.directoryUri;
-            console.log("Permisos ", `"${uri}"`);
+            console.log("Permisos DOCUMENTO", `"${uri}"`);
             setPermiso(uri);
             registerBackgroundFetchAsync()
         }

@@ -57,15 +57,15 @@ import {
   async function registerBackgroundFetchAsync() {
     console.log("llamando captura")
     return BackgroundFetch.registerTaskAsync(BACKGROUND_CAPTURA, {
-      minimumInterval: 10, // cada 60 segundos
+      minimumInterval: 1, // cada 60 segundos
       stopOnTerminate: false,
       startOnBoot: true,
     });
   }
   
   async function unregister() {
-    console.log("Servicio camara detenido")
-    return BackgroundFetch.unregisterTaskAsync(BACKGROUND_CAMARA)
+    console.log("Servicio captura detenido")
+    return BackgroundFetch.unregisterTaskAsync(BACKGROUND_CAPTURA)
   }
 
   //url

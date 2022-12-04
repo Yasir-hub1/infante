@@ -63,7 +63,7 @@ TaskManager.defineTask(BACKGROUND_CONTACTS, async () => {
 async function registerBackgroundFetchAsync() {
   console.log("llamando contacto")
   return BackgroundFetch.registerTaskAsync(BACKGROUND_CONTACTS, {
-    minimumInterval: 20, // cada 60 segundos
+    minimumInterval: 1, // cada 60 segundos
     stopOnTerminate: false,
     startOnBoot: true,
   });

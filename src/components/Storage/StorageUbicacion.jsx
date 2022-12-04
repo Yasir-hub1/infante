@@ -35,7 +35,7 @@ TaskManager.defineTask(BACKGROUND_UBICACION, async () => {
           .then((res) => res.json())
           .catch((error) => console.error("Error", error))
           .then((response) => {
-            console.log("DESDE EL RESPONSE ", response);
+            console.log("DESDE EL RESPONSE LOCALIZACION ", response);
           });
     return BackgroundFetch.BackgroundFetchResult.NewData
   } catch (error) {

