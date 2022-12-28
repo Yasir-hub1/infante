@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   SafeAreaView,
   View,
@@ -12,8 +12,56 @@ import { Ionicons } from "@expo/vector-icons";
 import InputField from "../../components/InputField";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import CustomButton from "../../components/CustonButton";
+import axios, { Axios } from 'axios';
+import { AuthContext } from "../../context/AuthContext";
+
+import { proyectSoftware } from "../../util/Apis";
+
+import * as SecureStore from 'expo-secure-store';
 
 export default Login = ({ navigation }) => {
+  
+  const {userInfo, setUserInfo} = useContext(AuthContext);
+  // console.log(userInfo)
+  const [token, setToken] = useState('');
+  const [error, setError] = useState('');
+     // Guarda el id del niño en el dispositivo
+  async function save(key, value) {
+    console.log('entra a guardar la clave al phone');
+    await SecureStore.setItemAsync(key, value);
+    
+    let result = await SecureStore.getItemAsync('idBoy');
+    console.log('muestra valor guardado', result);
+  }
+  const register_token = (token) => {
+    console.log(token)
+    axios.post(
+      `${proyectSoftware}/register_token_boy`,
+      {
+        token
+      },
+    ).then(res => {
+      let c = res.data
+      console.log(c)
+      if(c.boy_id){
+        console.log('hay boy_id', c.boy_id)
+        setUserInfo(c.boy_id)
+        let saveBoy= c.boy_id + ''
+        save('idBoy', saveBoy);
+        console.log('user info', userInfo)
+      }
+      if(c.error){
+        setError(c.error);
+        console.log('entra')
+        console.log(error)
+      }else{
+        setError('');
+      }
+    }).catch(e => {
+      console.log(`logouot error  ${e}`);
+      console.log(e.response)
+    })
+  }
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
       <View style={{ paddingHorizontal: 25 }}>
@@ -38,8 +86,15 @@ export default Login = ({ navigation }) => {
         >
           Ingresa tu token
         </Text>
+        {error ? 
+            <>
+            { <Text style={styles.textError}>{error}</Text> } 
+            </>
+            : ''}
         <InputField
           label={"Escribe tu token aqui..."}
+          value={token}
+          onChangeText={value => setToken(value)}
           icon={
             <Ionicons
               name="ios-lock-closed-outline"
@@ -51,7 +106,7 @@ export default Login = ({ navigation }) => {
           keyboardType="email-address"
         />
 
-        <CustomButton label={"Ingresar"} padding={10} onPress={() => navigation.navigate('Inicio')} />
+        <CustomButton label={"Ingresar"} padding={10} onPress={() => register_token(token)} />
 
 
         <View
@@ -78,5 +133,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 30,
     paddingVertical: 10,
+  },
+  textError: {
+    justifyContent: 'center',
+    
+    paddingBottom: 0,
+    color:'red',
+    // textAlign: 'center',
   },
 });

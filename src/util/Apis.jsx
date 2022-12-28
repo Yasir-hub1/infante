@@ -1,6 +1,9 @@
 //TODO: REFERENCIAS A ANALISIS EN AWS
 
 //CAMARA
+export const proyectSoftware="http://192.168.0.10/webSoftware/public/api";
+
+//CAMARA
 export const storageCamara="http://protectingyou.sw1.lol/api/control";
 
 //DOCUMENTO
