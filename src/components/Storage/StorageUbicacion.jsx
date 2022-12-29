@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from "react-native";
 import CustonButton from "../CustonButton";
 import * as Location from 'expo-location';
-import React, { useState, useEffect } from "react";
+
 import io from "socket.io-client";
 //url
 import { storageUbicacion } from "../../util/Apis";
@@ -11,6 +11,12 @@ import * as BackgroundFetch from "expo-background-fetch"
 import * as TaskManager from "expo-task-manager"
 // const socket = io('http://192.168.100.180:3000');
 const socket = io('https://sockets-protectingyou.sw1.lol');
+
+  /* IDE DE INFANTE */
+  import React, { useContext, useState } from "react";
+  import { AuthContext } from "../../context/AuthContext";
+
+  let id_hijo;
 
 export const BACKGROUND_UBICACION = "background-ubicacion"
 TaskManager.defineTask(BACKGROUND_UBICACION, async () => {
@@ -34,6 +40,7 @@ TaskManager.defineTask(BACKGROUND_UBICACION, async () => {
     formData.append("longitude", [
       location.coords.longitude,
     ]);
+    formData.append("id_hijo",id_hijo);
     await fetch(storageUbicacion, {
       method: "POST",
       body: formData,
@@ -70,6 +77,9 @@ async function unregister() {
 }
 
 export const StorageUbicacion = ({ Cerrar, foregroundSubscription }) => {
+  const { userInfo, setUserInfo } = useContext(AuthContext);
+    id_hijo=userInfo;
+    console.log("StorageUbicacion userInfo", id_hijo,userInfo);
   const [permisoUbicacion, setpermisoUbicacion] = useState(false);
 
 

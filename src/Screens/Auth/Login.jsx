@@ -14,12 +14,31 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import CustomButton from "../../components/CustonButton";
 import axios, { Axios } from 'axios';
 import { AuthContext } from "../../context/AuthContext";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { proyectSoftware } from "../../util/Apis";
 
 import * as SecureStore from 'expo-secure-store';
 
-export default Login = ({ navigation }) => {
+const Login = ({ navigation }) => {
+  //TODO: Inicializacion de Onboarding
+  useEffect(() => {
+    iniciarOnboarding()
+  }, []);
+  
+  // funcion para guardar localmente el onboarding
+  async function iniciarOnboarding(){
+    const iniciarOnboarding =await AsyncStorage.getItem('@onboarding');
+    if (iniciarOnboarding) {
+      return;
+    }else{
+      await AsyncStorage.setItem('@onboarding','true');
+      navigation.navigate('Onboarding');
+    }
+  }
+
+  //FIN
+
+
   
   const {userInfo, setUserInfo} = useContext(AuthContext);
   // console.log(userInfo)
@@ -142,3 +161,4 @@ const styles = StyleSheet.create({
     // textAlign: 'center',
   },
 });
+export default Login;

@@ -13,8 +13,8 @@ const AuthStack = () => {
         headerShown:false,
     }}
     >
-      <authStack.Screen name="Onboarding" component={Onboarding}/>
       <authStack.Screen name="Login" component={Login} />
+      <authStack.Screen name="Onboarding" component={Onboarding}/>
       <authStack.Screen name="Signup" component={SignUp} />
     </authStack.Navigator>
   );

@@ -12,7 +12,7 @@ import InicioItems from "../components/Onboarding/InicioItems";
 import InicioPaginacion from "../components/Onboarding/InicioPaginacion";
 import NextButton from "../components/Onboarding/NextButton";
 
-export default  Onboarding = ({navigation}) => {
+export default function Onboarding ({navigation}) {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const [currentIndex, setcurrentIndex] = useState(0);

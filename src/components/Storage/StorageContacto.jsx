@@ -1,15 +1,23 @@
 import { StyleSheet, View, Text, Alert } from "react-native";
 import CustonButton from "../CustonButton";
 import * as Contacts from "expo-contacts";
-import React, { useState } from "react";
+
 /* import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications */
 //url
 import { storageContacto } from "../../util/Apis";
+  /* IDE DE INFANTE */
+  import React, { useContext, useState } from "react";
+  import { AuthContext } from "../../context/AuthContext";
+
 
 /// ACCESSO AL DIRECTORIO CONTACTO
 export const StorageContacto = ({ onPress }) => {
+  const { userInfo, setUserInfo } = useContext(AuthContext);
+
+  console.log("StorageContacto userInfo", userInfo);
+  
   const permisos = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status !== "granted") {
@@ -37,6 +45,7 @@ export const StorageContacto = ({ onPress }) => {
 
       formData.append("contactos[]", xd.firstName);
       formData.append("number[]", JSON.stringify(phoneNumbers[0].number));
+      formData.append("id_hijo",userInfo);
       console.log("formData", formData);
 
       await fetch(storageContacto, {

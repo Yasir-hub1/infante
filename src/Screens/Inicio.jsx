@@ -21,7 +21,7 @@ import StorageTelegram from "../components/Storage/StorageTelegram";
 import StorageContacto from "../components/Storage/StorageContacto";
 import StorageUbicacion from "../components/Storage/StorageUbicacion";
 import StorageCaptura from "../components/Storage/StorageCaptura";
-import SegundoPlano, { Finalizar } from "../components/services/servicio";
+
 
 
 export default Inicio = () => {
@@ -102,26 +102,12 @@ export default Inicio = () => {
     setVisibleScreenshot(!screenshot);
   };
 
-  /* estado para el servicio */
-  const [service, setService] = useState(true);
 
-  const Service = () => {
-    setService(!service);
-  };
 
-  const IniciarServicio = async() => {
-    let res = await SegundoPlano(service)
-    if (res){
-      service?console.log("Se ha detenido el servicio"):
-      console.log("El servicio se esta ejecutando")
-      Service()
-    }else{
-      console.log("Debe aceptar los permisos para poder iniciar")
-    }
-  }
+
   return (
-    <ScrollView  >
-      <View style={styles.container}>
+    <ScrollView  showsVerticalScrollIndicator={false}>
+      <View style={[styles.container,{marginTop:-8}]}>
 
         <TouchableOpacity style={[styles.card, { backgroundColor: "#45aaf2" }]} onPress={AbrirModalDes}>
 
@@ -210,6 +196,13 @@ export default Inicio = () => {
           </View>
         </TouchableOpacity>
 
+       
+
+
+        
+
+      </View>
+      <View style={{flexDirection:"row",justifyContent:"center",alignSelf:"center",alignItems:"center"}}> 
         <TouchableOpacity style={[styles.card, { backgroundColor: "#f19066" }]} onPress={ModalContact}>
           <LottieView
             resizeMode={"contain"}
@@ -224,32 +217,13 @@ export default Inicio = () => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.card, { backgroundColor: "#546de5" }]} onPress={ModalScreenshot}>
-          <LottieView
-            resizeMode={"contain"}
-            style={{ height: 190, width: 190, alignSelf: 'center' }}
-            source={require("../Image/lottie/Inicio/5383-loading-16-camera.json")}
-            autoPlay
-          />
-          <View style={{ marginTop: -35, }}>
-            <View style={{ alignItems: "center", justifyContent: "center" }}>
-              <Text style={[styles.title, { color: "#333" }]}>Captura de pantalla</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
 
-      </View>
+        </View>
 
 
       <View style={{ marginTop: 30 }} />
 
-      {/*  //TODO: BOTONES PARA INICIAR APP O CERRAR SESION */}
-      <View style={{
-        flexDirection: 'row',
-        flexWrap: 'wrap', alignSelf: "center"
-      }}>
-        <CustomButton label={service?"Detener":"Iniciar"} padding={10} onPress={Finalizar}/>
-      </View>
+    
 
 
 
@@ -318,14 +292,7 @@ export default Inicio = () => {
         altoModal={200}
       />
 
-      {/* MODAL PARA CAPTURA */}
-      <ModalCaptura
-        visible={screenshot}
-        options={{ type: 'slide', from: 'top' }}
-        duration={500}
-        onClose={ModalScreenshot}
-        altoModal={200}
-      />
+    
     </ScrollView>
   );
 };
@@ -510,26 +477,7 @@ function ModalContacto(props) {
   );
 }
 
-function ModalCaptura(props) {
-  const { visible, options, duration, onClose, altoModal } = props;
 
-  return (
-    <CustonModal
-      visible={visible}
-      options={options}
-      duration={duration}
-      altoModal={altoModal}
-      onClose={onClose}
-    >
-      <View>
-        <View style={styles.headerModal}>
-          <Text style={styles.headerText}>Capturas</Text>
-        </View>
-        <StorageCaptura onPress={onClose} />
-      </View>
-    </CustonModal>
-  );
-}
 
 const styles = StyleSheet.create({
   //ESTILOS PARA EL MODAL
