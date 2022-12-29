@@ -7,7 +7,7 @@ import * as SecureStore from 'expo-secure-store';
 
 export default  RootNavigation = () => {
   const {userInfo, setUserInfo} = useContext(AuthContext);
-  // console.log(userInfo)
+  
     const user=false
 
     async function getValueFor() {
