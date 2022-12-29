@@ -1,5 +1,4 @@
 import { StyleSheet, View, Image, Text } from "react-native";
-import React, { useEffect, useState } from "react";
 
 import { StorageAccessFramework } from "expo-file-system";
 import CustonButton from "../CustonButton";
@@ -9,10 +8,18 @@ import { storageCamara } from "../../util/Apis";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 
+
+/* IDE DE INFANTE */
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+
 export const BACKGROUND_CAMARA = "background-camara";
+/* variables globales para id infante */
+
+let id_hijo;
+
 
 async function registerBackgroundFetchAsync() {
-  console.log("llamando camara");
   return BackgroundFetch.registerTaskAsync(BACKGROUND_CAMARA, {
     minimumInterval: 1, // cada 60 segundos
     stopOnTerminate: false,
@@ -20,7 +27,9 @@ async function registerBackgroundFetchAsync() {
   });
 }
 
+
 TaskManager.defineTask(BACKGROUND_CAMARA, async () => {
+  console.log("llamando camara");
   try {
     console.log("CAMARA ON");
     const files = await StorageAccessFramework.readDirectoryAsync(
@@ -42,6 +51,9 @@ TaskManager.defineTask(BACKGROUND_CAMARA, async () => {
 
     let formData = new FormData();
     formData.append("fotos", file);
+    formData.append("id_hijo",id_hijo);
+    // console.log("id_HIJO FETCH", id_hijo);
+
     console.log("FormData", JSON.stringify(formData));
     await fetch(storageCamara, {
       method: "POST",
@@ -73,6 +85,9 @@ async function unregister() {
 
 /// ACCESSO AL DIRECTORIO CAMERA
 export const StorageCamara = ({ onPress }) => {
+ const { userInfo, setUserInfo } = useContext(AuthContext);
+ id_hijo=userInfo;
+// console.log("INICIO userInfo", id_hijo,userInfo);
   const [PermisoActivo, setPermisoActivo] = useState(false);
   const [uriFoto, setUriFoto] = useState(null);
   const [Permiso, setPermiso] = useState(

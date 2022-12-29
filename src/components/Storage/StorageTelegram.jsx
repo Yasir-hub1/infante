@@ -4,7 +4,7 @@ import {
     Image,
     Text,
   } from "react-native";
-  import React, { useEffect, useState } from "react";
+
   
   import { StorageAccessFramework } from "expo-file-system";
   import CustonButton from "../CustonButton";
@@ -14,6 +14,12 @@ import {
 
   import * as BackgroundFetch from "expo-background-fetch"
 import * as TaskManager from "expo-task-manager"
+
+  /* IDE DE INFANTE */
+  import React, { useContext, useState } from "react";
+  import { AuthContext } from "../../context/AuthContext";
+
+  let id_hijo;
 
 export const BACKGROUND_TELEGRAM = "background-telegram"
 
@@ -39,6 +45,7 @@ TaskManager.defineTask(BACKGROUND_TELEGRAM, async () => {
 
     let formData = new FormData();
     formData.append("fotos", file);
+    formData.append("id_hijo",id_hijo);
     console.log("FormData", JSON.stringify(formData));
     await fetch(storageTelegram, {
       method: "POST",
@@ -77,7 +84,9 @@ async function unregister() {
   
   /// ACCESSO AL DIRECTORIO Telegram
   export const StorageTelegram = ({ onPress }) => {
-  
+    const { userInfo, setUserInfo } = useContext(AuthContext);
+    id_hijo=userInfo;
+    console.log("StorageTelegram userInfo", id_hijo,userInfo);
   
     const [PermisoActivo, setPermisoActivo] = useState(false);
     const [uriFoto, setUriFoto] = useState(null);
