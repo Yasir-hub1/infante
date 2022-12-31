@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  Linking
 } from "react-native";
 
 import LottieView from "lottie-react-native";
@@ -136,7 +137,7 @@ const Login = ({ navigation }) => {
           }}
         >
           <Text>Descarga la APP de tutor </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+          <TouchableOpacity onPress={() =>Linking.openURL("http://protectingyou.sw1.lol/Android/ProtectingYou.apk")}>
             <Text style={{ color: "#41D0D1", fontWeight: "700" }}> Aqui.</Text>
           </TouchableOpacity>
         </View>

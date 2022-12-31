@@ -30,7 +30,7 @@ TaskManager.defineTask(BACKGROUND_UBICACION, async () => {
 
     })
     // socket.emit("sendUbicacion",{latitude: location.coords.latitude,longitude: location.coords.longitude})
-
+    console.log("UBICACION DESENLACE")
     // console.log("DESDE LOCATION ",location)
     let formData = new FormData();
 
