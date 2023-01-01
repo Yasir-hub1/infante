@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,7 +11,8 @@ import {
 import CustonModal from "../components/CustonModal";
 import CustomButton from "../components/CustonButton";
 import LottieView from "lottie-react-native";
-
+import { AuthContext } from "../context/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //Metodos para la vista
 import StorageCamara from "../components/Storage/StorageCamara";
 import StorageDocumento from "../components/Storage/storageDocumento";
@@ -25,6 +26,15 @@ import StorageCaptura from "../components/Storage/StorageCaptura";
 
 
 export default Inicio = () => {
+  const { userInfo, setUserInfo } = useContext(AuthContext);
+   console.log("INICIO ",userInfo)
+  useEffect(() => {
+    (async () => {
+    await AsyncStorage.setItem('@id_hijo',userInfo);
+       console.log("ASYNC ");
+    })()
+  }, [])
+
   /* estados para abrir el modal de la camara */
   const [visibleCamara, setVisibleCamara] = useState(false);
 

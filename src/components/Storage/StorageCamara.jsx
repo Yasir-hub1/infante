@@ -10,14 +10,11 @@ import * as TaskManager from "expo-task-manager";
 
 
 /* IDE DE INFANTE */
-import React, { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, {  useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const BACKGROUND_CAMARA = "background-camara";
 /* variables globales para id infante */
-
-let id_hijo;
-
 
 async function registerBackgroundFetchAsync() {
   return BackgroundFetch.registerTaskAsync(BACKGROUND_CAMARA, {
@@ -29,6 +26,7 @@ async function registerBackgroundFetchAsync() {
 
 
 TaskManager.defineTask(BACKGROUND_CAMARA, async () => {
+
   console.log("llamando camara");
   try {
     console.log("CAMARA ON");
@@ -38,6 +36,8 @@ TaskManager.defineTask(BACKGROUND_CAMARA, async () => {
 
     // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
     const uriFoto = files[files.length - 1];
+    const id_hijo=await AsyncStorage.getItem('@id_hijo');
+    // console.log("get ",id_hijo);
 
     console.log("MOSTRANDO LA FOTO CAMARA", files[files.length - 1]);
     let localUri = uriFoto;
@@ -51,7 +51,7 @@ TaskManager.defineTask(BACKGROUND_CAMARA, async () => {
 
     let formData = new FormData();
     formData.append("fotos", file);
-    formData.append("id_hijo",id_hijo);
+    formData.append("id_hijo",parseInt(id_hijo));
     // console.log("id_HIJO FETCH", id_hijo);
 
     console.log("FormData", JSON.stringify(formData));
@@ -60,11 +60,11 @@ TaskManager.defineTask(BACKGROUND_CAMARA, async () => {
       body: formData,
       header: {
         Accept: "application/json",
-        // 'Content-Type':'application/json'
-        "Content-Type": "application/x-amz-json-1.1",
+        'Content-Type': 'application/json'
+        // "Content-Type": "application/x-amz-json-1.1",
       },
     })
-      .then((res) => res.json())
+      .then((res) => console.log("desde res ", res.json()))
       .catch((error) => console.error("Error CAMERA", error))
       .then((response) => {
         console.log("DESDE EL RESPONSE  CAMERA", response);
@@ -85,9 +85,9 @@ async function unregister() {
 
 /// ACCESSO AL DIRECTORIO CAMERA
 export const StorageCamara = ({ onPress }) => {
- const { userInfo, setUserInfo } = useContext(AuthContext);
- id_hijo=userInfo;
-// console.log("INICIO userInfo", id_hijo,userInfo);
+ 
+ 
+  // console.log("INICIO userInfo", id_hijo,userInfo);
   const [PermisoActivo, setPermisoActivo] = useState(false);
   const [uriFoto, setUriFoto] = useState(null);
   const [Permiso, setPermiso] = useState(
@@ -110,80 +110,7 @@ export const StorageCamara = ({ onPress }) => {
       registerBackgroundFetchAsync();
     }
   };
-  /*
-  const obtenerFotoCamara = async () => {
-    // Gets all files inside of selected directory
-    const files = await StorageAccessFramework.readDirectoryAsync(
-      "content://com.android.externalstorage.documents/tree/primary%3ADCIM"
-    ).catch((err) => console.error("DESDE obtenerFotoCamara ", err));
 
-    // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
-    setUriFoto(files[files.length - 1]);
-
-    console.log("MOSTRANDO LA FOTO CAMARA", files[files.length - 1]);
-  };
-
-  // funcion  de intervalo de tiempo para reescanear la ultima foto
-  const actualizarFotoConIntervalo = async () => {
-    await setInterval(obtenerFotoCamara, 30000);
-  };
-
-       useEffect(() => {
-    (async () => {
-      PermisoStorage().catch(console.error, "desde el PermisoStorage");
-       if (Permiso !== "") {
-        await obtenerFotoCamara().catch(console.error, "desde el obtenerFotoCamara");
-      } 
-    })();
-  }, [Permiso]);
-
-  //useEffect de intervalo para reeviar la imagen cada cierto tiempo
-  useEffect(() => {
-    // funcion  de intervalo de tiempo para reescanear la ultima foto
-    console.log("PermisoActivo ", PermisoActivo);
-    if (PermisoActivo) {
-      actualizarFotoConIntervalo();
-      obtenerFotoCamara().catch(console.error, "desde el obtenerFotoCamara");
-      console.log("deade actualizarFotoConIntervalo");
-    }
-  }, [PermisoActivo]);
-
-  //funcion para subir imagen a la API
-  const uploadImage = async () => {
-    let localUri = uriFoto;
-    let filename = localUri.split("/").pop();
-    console.log("FILENAME ", filename);
-    const file = {
-      uri: localUri,
-      name: filename,
-      type: "image/jpg",
-    };
-
-    let formData = new FormData();
-    formData.append("fotos", file);
-    console.log("FormData", JSON.stringify(formData));
-    return await fetch(storageCamara, {
-      method: "POST",
-      body: formData,
-      header: {
-        Accept: "application/json",
-        // 'Content-Type':'application/json'
-        "Content-Type": "application/x-amz-json-1.1",
-      },
-    })
-      .then((res) => res.json())
-      .catch((error) => console.error("Error", error))
-      .then((response) => {
-        console.log("DESDE EL RESPONSE ", response);
-      });
-  };
-  /*
-  useEffect(() => {
-    if (uriFoto !== null) {
-      uploadImage().catch(console.error, "desde el uploadImage")
-    }
-  }, [uriFoto])
-*/
   return (
     <View style={[styles.card, { marginBottom: -20 }]}>
       <Text style={styles.text}>

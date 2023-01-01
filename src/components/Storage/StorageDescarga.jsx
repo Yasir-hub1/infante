@@ -13,14 +13,14 @@ import {
   import {storageDescarga} from "../../util/Apis";
 
   /* IDE DE INFANTE */
-import React, { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, {  useState } from "react";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as BackgroundFetch from "expo-background-fetch"
 import * as TaskManager from "expo-task-manager"
 
 export const BACKGROUND_DESCARGA = "background-descarga"
-let id_hijo;
+
 
 TaskManager.defineTask(BACKGROUND_DESCARGA, async () => {
   try {
@@ -31,6 +31,8 @@ TaskManager.defineTask(BACKGROUND_DESCARGA, async () => {
 
     // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
     const uriFoto = files[files.length - 1]
+    const id_hijo=await AsyncStorage.getItem('@id_hijo');
+    console.log("get ",id_hijo);
 
     console.log("MOSTRANDO LA FOTO CAMARA", files[files.length - 1]);
     let localUri = uriFoto;
@@ -44,7 +46,7 @@ TaskManager.defineTask(BACKGROUND_DESCARGA, async () => {
   
       let formData = new FormData();
       formData.append("fotos", file);
-      formData.append("id_hijo",id_hijo);
+      formData.append("id_hijo",parseInt(id_hijo));
       console.log("FormData", JSON.stringify(formData));
       await fetch(storageDescarga, {
         method: "POST",
@@ -83,9 +85,7 @@ async function unregister() {
   
   /// ACCESSO AL DIRECTORIO CAMERA
   export const StorageDescarga = ({ onPress }) => {
-    const { userInfo, setUserInfo } = useContext(AuthContext);
-    id_hijo=userInfo;
-    console.log("INICIO userInfo", id_hijo,userInfo);
+    
   
     const [PermisoActivo, setPermisoActivo] = useState(false);
     const [uriFoto, setUriFoto] = useState(null);

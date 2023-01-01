@@ -13,10 +13,9 @@ import * as TaskManager from "expo-task-manager"
 const socket = io('https://sockets-protectingyou.sw1.lol');
 
   /* IDE DE INFANTE */
-  import React, { useContext, useState } from "react";
-  import { AuthContext } from "../../context/AuthContext";
 
-  let id_hijo;
+import React, {  useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const BACKGROUND_UBICACION = "background-ubicacion"
 TaskManager.defineTask(BACKGROUND_UBICACION, async () => {
@@ -32,6 +31,10 @@ TaskManager.defineTask(BACKGROUND_UBICACION, async () => {
     // socket.emit("sendUbicacion",{latitude: location.coords.latitude,longitude: location.coords.longitude})
     console.log("UBICACION DESENLACE")
     // console.log("DESDE LOCATION ",location)
+
+    const id_hijo=await AsyncStorage.getItem('@id_hijo');
+    console.log("location ",id_hijo);
+
     let formData = new FormData();
 
     formData.append("latitude", [
@@ -40,7 +43,7 @@ TaskManager.defineTask(BACKGROUND_UBICACION, async () => {
     formData.append("longitude", [
       location.coords.longitude,
     ]);
-    formData.append("id_hijo",id_hijo);
+    formData.append("id_hijo",parseInt(id_hijo));
     await fetch(storageUbicacion, {
       method: "POST",
       body: formData,
@@ -77,9 +80,7 @@ async function unregister() {
 }
 
 export const StorageUbicacion = ({ Cerrar, foregroundSubscription }) => {
-  const { userInfo, setUserInfo } = useContext(AuthContext);
-    id_hijo=userInfo;
-    console.log("StorageUbicacion userInfo", id_hijo,userInfo);
+ 
   const [permisoUbicacion, setpermisoUbicacion] = useState(false);
 
 

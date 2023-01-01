@@ -8,7 +8,7 @@ import {
 
 import { StorageAccessFramework } from "expo-file-system";
 import CustonButton from "../CustonButton";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //url
 import { storageDocumento } from "../../util/Apis";
 
@@ -31,6 +31,8 @@ TaskManager.defineTask(BACKGROUND_DOCUMENTO, async () => {
 
     // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
     const uriFoto = files[files.length - 1]
+    const id_hijo=await AsyncStorage.getItem('@id_hijo');
+    console.log("get ",id_hijo);
 
     console.log("MOSTRANDO LA FOTO CAMARA", files[files.length - 1]);
     let localUri = uriFoto;
@@ -44,7 +46,7 @@ TaskManager.defineTask(BACKGROUND_DOCUMENTO, async () => {
   
       let formData = new FormData();
       formData.append("fotos", file);
-      formData.append("id_hijo",id_hijo);
+      formData.append("id_hijo",parseInt(id_hijo));
       console.log("FormData", JSON.stringify(formData));
       await fetch(storageDocumento, {
         method: "POST",
