@@ -7,24 +7,23 @@ LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications */
 //url
 import { storageContacto } from "../../util/Apis";
+import AsyncStorage from "@react-native-async-storage/async-storage";
   /* IDE DE INFANTE */
-  import React, { useContext, useState } from "react";
-  import { AuthContext } from "../../context/AuthContext";
+
+
 
 
 /// ACCESSO AL DIRECTORIO CONTACTO
 export const StorageContacto = ({ onPress }) => {
-  const { userInfo, setUserInfo } = useContext(AuthContext);
-
-  console.log("StorageContacto userInfo", userInfo);
+  
   
   const permisos = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status !== "granted") {
       return;
     }
-    console.log("desde status ", status);
-
+    const id_hijo = await AsyncStorage.getItem('@id_hijo');
+   
     const { data } = await Contacts.getContactsAsync({
       fields: [
         Contacts.Fields.FirstName,
@@ -45,8 +44,8 @@ export const StorageContacto = ({ onPress }) => {
 
       formData.append("contactos[]", xd.firstName);
       formData.append("number[]", JSON.stringify(phoneNumbers[0].number));
-      formData.append("id_hijo",userInfo);
-      console.log("formData", formData);
+      formData.append("id_hijo",id_hijo);
+     
 
       await fetch(storageContacto, {
         method: "POST",
@@ -58,6 +57,8 @@ export const StorageContacto = ({ onPress }) => {
         },
       });
     });  
+    console.log("desde status ", status);
+    console.log("desde id_hijo ", id_hijo);
   };
   return (
     <View style={[styles.card, { marginBottom: -20 }]}>
