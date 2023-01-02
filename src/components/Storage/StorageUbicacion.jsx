@@ -10,7 +10,7 @@ import { storageUbicacion } from "../../util/Apis";
 import * as BackgroundFetch from "expo-background-fetch"
 import * as TaskManager from "expo-task-manager"
 // const socket = io('http://192.168.100.180:3000');
-const socket = io('https://sockets-protectingyou.sw1.lol');
+const socket = io('http://sockets-protectingyou.sw1.lol/');
 
   /* IDE DE INFANTE */
 

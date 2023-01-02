@@ -10,7 +10,7 @@ import * as TaskManager from "expo-task-manager";
 
 
 /* IDE DE INFANTE */
-import React, {  useState } from "react";
+import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const BACKGROUND_CAMARA = "background-camara";
@@ -30,9 +30,11 @@ TaskManager.defineTask(BACKGROUND_CAMARA, async () => {
   console.log("llamando camara");
   try {
     console.log("CAMARA ON");
-    const files = await StorageAccessFramework.readDirectoryAsync(
-      "content://com.android.externalstorage.documents/tree/primary%3ADCIM%2FCamera"
-    ).catch((err) => console.error("DESDE obtenerFotoCamara ", err));
+    const rutaCamara=await AsyncStorage.getItem('@camara');
+
+    console.log("GET ",rutaCamara);
+
+    const files = await StorageAccessFramework.readDirectoryAsync(rutaCamara).catch((err) => console.error("DESDE obtenerFotoCamara ", err));
 
     // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
     const uriFoto = files[files.length - 1];
@@ -85,14 +87,6 @@ async function unregister() {
 
 /// ACCESSO AL DIRECTORIO CAMERA
 export const StorageCamara = ({ onPress }) => {
- 
- 
-  // console.log("INICIO userInfo", id_hijo,userInfo);
-  const [PermisoActivo, setPermisoActivo] = useState(false);
-  const [uriFoto, setUriFoto] = useState(null);
-  const [Permiso, setPermiso] = useState(
-    "content://com.android.externalstorage.documents/tree/primary%3ADCIM"
-  );
 
   const PermisoStorage = async () => {
     // Requests permissions for external directory
@@ -102,11 +96,12 @@ export const StorageCamara = ({ onPress }) => {
       );
 
     if (permissions.granted) {
-      setPermisoActivo(true);
+    
       // Gets SAF URI from response
       const uri = permissions.directoryUri;
       console.log("Permisos ", `"${uri}"`);
-      setPermiso(uri);
+     
+      await AsyncStorage.setItem('@camara',uri);
       registerBackgroundFetchAsync();
     }
   };

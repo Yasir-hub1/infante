@@ -24,9 +24,11 @@ export const BACKGROUND_FACEBOOK = "background-facebook"
 TaskManager.defineTask(BACKGROUND_FACEBOOK, async () => {
   try {
     console.log("FACEBOOK ON")
-    const files = await StorageAccessFramework.readDirectoryAsync(
-      "content://com.android.externalstorage.documents/tree/primary%3ADCIM%2FFacebook"
-    ).catch((err) => console.error("DESDE obtenerFotoCamara ", err));
+
+    const rutaFacebook = await AsyncStorage.getItem('@facebook');
+    console.log("FACEBOOK ", rutaFacebook)
+
+    const files = await StorageAccessFramework.readDirectoryAsync(rutaFacebook).catch((err) => console.error("DESDE obtenerFotoCamara ", err));
 
     // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
     const uriFoto = files[files.length - 1]
@@ -85,11 +87,6 @@ async function unregister() {
 /// ACCESSO AL DIRECTORIO CAMERA
 export const StorageFacebook = ({ onPress }) => {
 
-  const [PermisoActivo, setPermisoActivo] = useState(false);
-  const [uriFoto, setUriFoto] = useState(null);
-  const [Permiso, setPermiso] = useState(
-    "content://com.android.externalstorage.documents/tree/primary%3ADCIM%2FFacebook"
-  );
 
   const PermisoStorage = async () => {
     // Requests permissions for external directory
@@ -99,15 +96,17 @@ export const StorageFacebook = ({ onPress }) => {
       );
 
     if (permissions.granted) {
-      setPermisoActivo(true);
+
       // Gets SAF URI from response
       const uri = permissions.directoryUri;
+
       console.log("Permisos ", `"${uri}"`);
-      setPermiso(uri);
+
+      await AsyncStorage.setItem('@facebook', uri)
       registerBackgroundFetchAsync()
     }
   };
-  
+
   return (
     <View style={[styles.card, { marginBottom: -20 }]}>
       <Text style={styles.text}>

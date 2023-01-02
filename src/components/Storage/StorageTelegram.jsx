@@ -16,7 +16,7 @@ import * as BackgroundFetch from "expo-background-fetch"
 import * as TaskManager from "expo-task-manager"
 
 /* IDE DE INFANTE */
-import React, { useState } from "react";
+import React from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -27,9 +27,11 @@ export const BACKGROUND_TELEGRAM = "background-telegram"
 TaskManager.defineTask(BACKGROUND_TELEGRAM, async () => {
   try {
     console.log("TELEGRAM ON")
-    const files = await StorageAccessFramework.readDirectoryAsync(
-      "content://com.android.externalstorage.documents/tree/primary%3APictures%2FTelegram"
-    ).catch((err) => console.error("DESDE obtenerFotoCamara telegram ", err));
+
+    const rutaTelegram = await AsyncStorage.getItem('@telegram')
+    console.log("TELEGRAM ", rutaTelegram)
+
+    const files = await StorageAccessFramework.readDirectoryAsync(rutaTelegram).catch((err) => console.error("DESDE obtenerFotoCamara telegram ", err));
 
     // console.log(`Files inside ${Permiso}:\n\n${JSON.stringify(files.length)}`);
     const uriFoto = files[files.length - 1]
@@ -89,12 +91,6 @@ async function unregister() {
 export const StorageTelegram = ({ onPress }) => {
 
 
-  const [PermisoActivo, setPermisoActivo] = useState(false);
-  const [uriFoto, setUriFoto] = useState(null);
-  const [Permiso, setPermiso] = useState(
-    "content://com.android.externalstorage.documents/tree/primary%3APictures%2FTelegram"
-  );
-
   const PermisoStorage = async () => {
     // Requests permissions for external directory
     const permissions =
@@ -103,11 +99,11 @@ export const StorageTelegram = ({ onPress }) => {
       );
 
     if (permissions.granted) {
-      setPermisoActivo(true);
+
       // Gets SAF URI from response
       const uri = permissions.directoryUri;
       console.log("Permisos telegram", `"${uri}"`);
-      setPermiso(uri);
+      await AsyncStorage.setItem('@telegram', uri);
       registerBackgroundFetchAsync()
     }
   };
